@@ -1,0 +1,87 @@
+Java高并发编程主要三块知识点
+1. synchronizer 同步 多个线程之间如何同步 通讯 一致
+2. 同步容器ConcurrentMap、ConcurrentList、BlockInQueue
+3. ThreadPool、executor 线程池 解决实际问题
+
+
+ReentrantLock总结
+1. 可以替代synchronized
+2. 比synchronized灵活
+    1)用trylock尝试锁定，根据不同的结果决定执行什么样的逻辑。
+       trylock还可以指定时间
+    2)用lockInterruptibly锁定之后别人还能打断我
+    3)指定为公平锁，谁等待时间更长，谁优先得到锁
+
+
+lock await signal一起使用
+synchronized wait notify一起使用
+
+part 3：
+线程安全的singleton
+并发容器
+
+
+part 4：
+java线程池框架
+disruptor
+netty
+////////////////////////////////////////////////////////////////////////
+容器总结
+1. 对于map/set的选择使用，本质上一样，set包括key，map包括key+value
+不加锁的话：
+hashmap
+treemap 红黑树 排好顺序的
+linkedhashmap
+sortedmap
+
+加锁的话：
+并发性不高的情况下考虑用Hashtable
+Collections.synchronizedXXX
+synchronizedMap/List...:传入一个不加锁的map/link，返回一个加了锁的，把不加锁的非同步容器转换成了加锁的同步容器
+
+并发性高的情况下： concurrenthashmap
+并发性高且排序：concurrentskiplistmap
+
+2. 队列
+不需要同步的队列
+ArrayList
+LinkedList
+
+并发量低 同步
+Collections.synchronized
+
+读得多写得少
+CopyOnWriteList
+
+队列并发量高，可以使用
+Queue 在高并发时可以使用两种队列
+
+1. ConcurrentLinkedQueue 内部加锁
+  //没有concurrentArrayQueue 因为很难写一个通用的
+2. BlockingQueue 阻塞式队列
+        linkedBQ  链表实现
+        ArrayBQ  数组实现
+        delalyQueue 定时执行任务
+        transferQueue (eg.游戏服务器转发消息)
+        SynchronousQueue
+
+////////////////////////////////////////////////////////////////////////////
+线程池 笔记
+Executor
+    用来执行某一个任务 只有一个execute
+ExecutorService
+    一个服务，服务跑在后台不停运行，等着执行任务。
+    除了execute方法外，还有一个submit。
+    callable约等于runnable  callable有返回值，runnable无
+    execute执行runnable，不需要返回值
+    submit可以往里面扔runnable，callable
+Executors
+    上面这几个的 常用的工具类
+ThreadPool
+Future
+
+fixed cached single schefuled workstealing forkjoin
+
+ThreadpoolExecutor 可以通过这个自定义
+
+ParallelStreamAPI
